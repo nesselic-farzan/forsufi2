@@ -1,224 +1,259 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bro Appreciation Portal™</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(-45deg, #1e1e2f, #2c2c54, #3b3b98, #1e3799);
-      background-size: 400% 400%;
-      animation: gradientShift 10s ease infinite;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>Bro Appreciation Portal</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #000);
+    color: white;
+  }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+  .center {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
 
-    .container {
-      width: 95%;
-      max-width: 420px;
-      z-index: 2;
-    }
+  .traits p {
+    margin: 6px 0;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
 
-    h1 {
-      font-size: 22px;
-      margin-bottom: 15px;
-      animation: textColorShift 4s linear infinite;
-    }
+  .traits p:hover {
+    color: #3797f0;
+  }
 
-    @keyframes textColorShift {
-      0% { color: #ff6b81; }
-      25% { color: #70a1ff; }
-      50% { color: #7bed9f; }
-      75% { color: #ffa502; }
-      100% { color: #ff6b81; }
-    }
+  button {
+    margin-top: 20px;
+    padding: 12px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background: #3797f0;
+    color: white;
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
 
-    .card {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
+  button:hover {
+    transform: scale(1.05);
+    background: #4aa3ff;
+  }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      border: none;
-      border-radius: 25px;
-      background: #ff6b81;
-      color: white;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+  .chat-page {
+    display: none;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+  }
 
-    button:active {
-      transform: scale(0.96);
-    }
+  .chat-header {
+    background: #111;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #222;
+  }
 
-    .hidden { display: none; }
+  .chat-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 
-    /* Fake chat UI */
-    .chat {
-      background: #0f0f1a;
-      border-radius: 15px;
-      padding: 15px;
-      height: 400px;
-      display: flex;
-      flex-direction: column;
-    }
+  .chat-header span {
+    font-weight: bold;
+  }
 
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      text-align: left;
-      margin-bottom: 10px;
-    }
+  .chat-box {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .msg {
-      padding: 8px 12px;
-      border-radius: 15px;
-      margin-bottom: 8px;
-      max-width: 75%;
-      font-size: 14px;
-    }
+  .message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
 
-    .her {
-      background: #26263a;
-      align-self: flex-start;
-    }
+  .left {
+    justify-content: flex-start;
+  }
 
-    .you {
-      background: #ff6b81;
-      align-self: flex-end;
-    }
+  .right {
+    justify-content: flex-end;
+  }
 
-    .inputRow {
-      display: flex;
-      gap: 5px;
-    }
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 18px;
+    max-width: 65%;
+    font-size: 14px;
+  }
 
-    input {
-      flex: 1;
-      padding: 8px;
-      border-radius: 20px;
-      border: none;
-    }
+  .sama {
+    background: #262626;
+  }
 
-    .disclaimer {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-top: 8px;
-    }
-  </style>
+  .user {
+    background: #3797f0;
+  }
+
+  .system {
+    align-self: center;
+    font-size: 12px;
+    color: grey;
+  }
+
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #222;
+    background: #111;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+  }
+
+  .chat-input button {
+    margin-left: 10px;
+    border-radius: 20px;
+  }
+</style>
 </head>
 <body>
 
-  <div class="container" id="mainPage">
-    <h1>Bro Appreciation Portal™</h1>
-
-    <div class="card">
-      <p><strong>Official Stats:</strong></p>
+<div class="center" id="home">
+  <h1>Bro Appreciation Portal</h1>
+  <div class="traits">
       <p>✔ ABSOLUTELY Loyal</p>
       <p>✔ Dramatic hehehe</p>
       <p>✔ Emotionally invested :00</p>
       <p>✔ Top-tier homie</p>
-    </div>
+  </div>
+  <button onclick="openChat()">dont click</button>
+</div>
 
-    <button onclick="openSimulator()">dont click</button>
+<div class="chat-page" id="chatPage">
+  <div class="chat-header">
+    <img src="file_00000000484c720ba4ca0becfe91d90e" alt="pfp">
+    <span>sama</span>
   </div>
 
-  <div class="container hidden" id="chatPage">
-    <h1>Sama Support Simulator™</h1>
+  <div class="chat-box" id="chatBox"></div>
 
-    <div class="chat">
-      <div class="messages" id="messages"></div>
-
-      <div class="inputRow">
-        <input type="text" id="userInput" placeholder="Type a message..." />
-        <button onclick="sendMessage()">Send</button>
-      </div>
-    </div>
-
-    <div class="disclaimer">
-      Parody simulator for fun. Not a real chat.
-    </div>
-
-    <button onclick="goBack()">Back</button>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Message...">
+    <button onclick="sendMessage()">Send</button>
   </div>
+</div>
 
-  <script>
-    const replies = [
-      "heyyyy how you doinggg",
-      "howww are youuu? whatre u uptoo??",
-      "heyy, just saying, dont overthink anything okayy?",
-      "i appreciate you more than you think.",
-      "weird to say but you matter a lott to me 😭",
-      "you are special to me even if i dont show it okay..",
-      "Okay I gotta go lol bye"
-    ];
+<script>
+  const replies = [
+    "heyyyy how you doinggg",
+    "howww are youuu? whatre u uptoo??",
+    "heyy, just saying, dont overthink anything okayy?",
+    "i appreciate you more than you think.",
+    "weird to say but you matter a lott to me 😭",
+    "you are special to me even if i dont show it okay..",
+    "Okay I gotta go lol bye"
+  ];
 
-    let replyIndex = 0;
+  let replyIndex = 0;
+  let samaGone = false;
+  let postGoneCount = 0;
 
-    function openSimulator() {
-      document.getElementById("mainPage").classList.add("hidden");
-      document.getElementById("chatPage").classList.remove("hidden");
-      addHerMessage("Heyyy");
+  function openChat() {
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('chatPage').style.display = 'flex';
+    setTimeout(sendSamaMessage, 500);
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    addUserMessage(text);
+    input.value = '';
+
+    if (!samaGone) {
+      setTimeout(sendSamaMessage, 700);
+    } else {
+      postGoneCount++;
+      if (postGoneCount === 3) {
+        const sys = document.createElement('div');
+        sys.className = 'system';
+        sys.innerText = 'im sorry bro';
+        document.getElementById('chatBox').appendChild(sys);
+        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+      }
     }
+  }
 
-    function goBack() {
-      document.getElementById("chatPage").classList.add("hidden");
-      document.getElementById("mainPage").classList.remove("hidden");
+  function sendSamaMessage() {
+    if (replyIndex < replies.length) {
+      addSamaMessage(replies[replyIndex]);
+      if (replies[replyIndex] === "Okay I gotta go lol bye") {
+        samaGone = true;
+      }
+      replyIndex++;
     }
+  }
 
-    function addHerMessage(text) {
-      const msg = document.createElement("div");
-      msg.className = "msg her";
-      msg.innerText = text;
-      document.getElementById("messages").appendChild(msg);
-      scrollDown();
-    }
+  function addSamaMessage(text) {
+    const row = document.createElement('div');
+    row.className = 'message-row left';
 
-    function addYourMessage(text) {
-      const msg = document.createElement("div");
-      msg.className = "msg you";
-      msg.innerText = text;
-      document.getElementById("messages").appendChild(msg);
-      scrollDown();
-    }
+    const img = document.createElement('img');
+    img.src = 'file_00000000484c720ba4ca0becfe91d90e';
+    img.style.width = '28px';
+    img.style.height = '28px';
+    img.style.borderRadius = '50%';
 
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      if (!input.value.trim()) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble sama';
+    bubble.innerText = text;
 
-      addYourMessage(input.value);
-      input.value = "";
+    row.appendChild(img);
+    row.appendChild(bubble);
 
-      setTimeout(() => {
-        if (replyIndex < replies.length) {
-          addHerMessage(replies[replyIndex]);
-          replyIndex++;
-        }
-      }, 800);
-    }
+    document.getElementById('chatBox').appendChild(row);
+    document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+  }
 
-    function scrollDown() {
-      const messages = document.getElementById("messages");
-      messages.scrollTop = messages.scrollHeight;
-    }
-  </script>
+  function addUserMessage(text) {
+    const row = document.createElement('div');
+    row.className = 'message-row right';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble user';
+    bubble.innerText = text;
+
+    row.appendChild(bubble);
+
+    document.getElementById('chatBox').appendChild(row);
+    document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+  }
+</script>
+
 </body>
-</html>
+</
