@@ -190,7 +190,7 @@ input {
 <div id="chatPage">
   <div class="header">
     <div class="back" onclick="goBack()">←</div>
-    <img src="sama.png">
+    <img src="sama.jpg">
     <div>sama</div>
   </div>
 
@@ -220,27 +220,37 @@ let ended = false;
 function openSimulator() {
   document.getElementById("intro").style.display = "none";
   document.getElementById("chatPage").style.display = "flex";
-  sendSamaMessage();
+  sendNextSamaMessage();
 }
 
 function goBack() {
   location.reload();
 }
 
-function sendSamaMessage() {
+function sendNextSamaMessage() {
   if (msgIndex >= samaMessages.length) {
     ended = true;
     return;
   }
 
+  const chat = document.getElementById("chatBox");
+
+  // Typing indicator
+  const typing = document.createElement("div");
+  typing.className = "systemMsg";
+  typing.id = "typingIndicator";
+  typing.textContent = "sama is typing...";
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
   setTimeout(() => {
-    const chat = document.getElementById("chatBox");
+    typing.remove();
 
     const row = document.createElement("div");
     row.className = "messageRow sama";
 
     const img = document.createElement("img");
-    img.src = "sama.png";
+    img.src = "sama.jpg";
     img.className = "pfp";
 
     const bubble = document.createElement("div");
@@ -254,16 +264,50 @@ function sendSamaMessage() {
     chat.scrollTop = chat.scrollHeight;
     msgIndex++;
 
-    if (msgIndex < samaMessages.length) {
-      sendSamaMessage();
-    } else {
+    if (msgIndex >= samaMessages.length) {
       ended = true;
     }
-
   }, 1200);
 }
 
 function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const chat = document.getElementById("chatBox");
+
+  const row = document.createElement("div");
+  row.className = "messageRow user";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble userBubble";
+  bubble.textContent = text;
+
+  row.appendChild(bubble);
+  chat.appendChild(row);
+
+  // Remove old seen
+  const oldSeen = document.getElementById("seenLabel");
+  if (oldSeen) oldSeen.remove();
+
+  // Add Seen under user's message
+  const seen = document.createElement("div");
+  seen.className = "systemMsg";
+  seen.id = "seenLabel";
+  seen.textContent = "Seen";
+  chat.appendChild(seen);
+
+  chat.scrollTop = chat.scrollHeight;
+  input.value = "";
+
+  if (!ended) {
+    setTimeout(() => {
+      sendNextSamaMessage();
+    }, 900);
+  } else {
+    abandonedCount++;
+    if (a() {
   const input = document.getElementById("userInput");
   const text = input.value.trim();
   if (!text) return;
@@ -281,7 +325,11 @@ function sendMessage() {
   chat.scrollTop = chat.scrollHeight;
   input.value = "";
 
-  if (ended) {
+  if (!ended) {
+    setTimeout(() => {
+      sendNextSamaMessage();
+    }, 900);
+  } else {
     abandonedCount++;
     if (abandonedCount === 3) {
       const sys = document.createElement("div");
