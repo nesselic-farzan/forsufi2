@@ -216,26 +216,29 @@ const samaMessages = [
 let msgIndex = 0;
 let abandonedCount = 0;
 let ended = false;
+let waitingForReply = false;
 
 function openSimulator() {
   document.getElementById("intro").style.display = "none";
   document.getElementById("chatPage").style.display = "flex";
-  sendNextSamaMessage();
+  sendSamaMessage();
 }
 
 function goBack() {
   location.reload();
 }
 
-function sendNextSamaMessage() {
+function sendSamaMessage() {
   if (msgIndex >= samaMessages.length) {
     ended = true;
+    waitingForReply = false;
     return;
   }
 
+  waitingForReply = true;
+
   const chat = document.getElementById("chatBox");
 
-  // Typing indicator
   const typing = document.createElement("div");
   typing.className = "systemMsg";
   typing.id = "typingIndicator";
@@ -262,12 +265,14 @@ function sendNextSamaMessage() {
     chat.appendChild(row);
 
     chat.scrollTop = chat.scrollHeight;
+
     msgIndex++;
+    waitingForReply = false;
 
     if (msgIndex >= samaMessages.length) {
       ended = true;
     }
-  }, 1200);
+  }, 1500);
 }
 
 function sendMessage() {
@@ -287,11 +292,9 @@ function sendMessage() {
   row.appendChild(bubble);
   chat.appendChild(row);
 
-  // Remove old seen
   const oldSeen = document.getElementById("seenLabel");
   if (oldSeen) oldSeen.remove();
 
-  // Add Seen under user's message
   const seen = document.createElement("div");
   seen.className = "systemMsg";
   seen.id = "seenLabel";
@@ -301,35 +304,11 @@ function sendMessage() {
   chat.scrollTop = chat.scrollHeight;
   input.value = "";
 
-  if (!ended) {
-    setTimeout(() => {
-      sendNextSamaMessage();
-    }, 900);
-  } else {
-    abandonedCount++;
-    if (a() {
-  const input = document.getElementById("userInput");
-  const text = input.value.trim();
-  if (!text) return;
+  if (!ended && !waitingForReply) {
+    sendSamaMessage();
+  }
 
-  const chat = document.getElementById("chatBox");
-  const row = document.createElement("div");
-  row.className = "messageRow user";
-
-  const bubble = document.createElement("div");
-  bubble.className = "bubble userBubble";
-  bubble.textContent = text;
-
-  row.appendChild(bubble);
-  chat.appendChild(row);
-  chat.scrollTop = chat.scrollHeight;
-  input.value = "";
-
-  if (!ended) {
-    setTimeout(() => {
-      sendNextSamaMessage();
-    }, 900);
-  } else {
+  if (ended) {
     abandonedCount++;
     if (abandonedCount === 3) {
       const sys = document.createElement("div");
@@ -341,14 +320,12 @@ function sendMessage() {
   }
 }
 
-// ENTER KEY SUPPORT (desktop + mobile keyboards)
 document.getElementById("userInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     e.preventDefault();
     sendMessage();
   }
 });
-
 </script>
 
 </body>
