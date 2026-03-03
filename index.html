@@ -241,6 +241,8 @@ function sendSamaMessage() {
 
   const typing = document.createElement("div");
   typing.className = "systemMsg";
+  typing.style.textAlign = "left";
+  typing.style.marginLeft = "40px";
   typing.id = "typingIndicator";
   typing.textContent = "sama is typing...";
   chat.appendChild(typing);
@@ -253,7 +255,7 @@ function sendSamaMessage() {
     row.className = "messageRow sama";
 
     const img = document.createElement("img");
-    img.src = "sama.jpg";
+    img.src = "sama.png";
     img.className = "pfp";
 
     const bubble = document.createElement("div");
@@ -297,6 +299,8 @@ function sendMessage() {
 
   const seen = document.createElement("div");
   seen.className = "systemMsg";
+  seen.style.textAlign = "right";
+  seen.style.marginRight = "10px";
   seen.id = "seenLabel";
   seen.textContent = "Seen";
   chat.appendChild(seen);
