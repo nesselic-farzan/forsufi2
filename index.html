@@ -1,259 +1,307 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Bro Appreciation Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sama Support System</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a, #000);
-    color: white;
-  }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #1a1a1a, #2b0f3a);
+  color: white;
+  overflow: hidden;
+}
 
-  .center {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-  }
+/* INTRO PAGE */
+#intro {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: fadeIn 1.5s ease forwards;
+}
 
-  .traits p {
-    margin: 6px 0;
-    font-size: 18px;
-    transition: color 0.3s ease;
-  }
+#intro h1 {
+  font-size: 32px;
+  background: linear-gradient(90deg, #ff4ecd, #7a5cff);
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: glow 2s infinite alternate;
+}
 
-  .traits p:hover {
-    color: #3797f0;
-  }
+.traits p {
+  margin: 8px 0;
+  transition: 0.3s;
+}
 
-  button {
-    margin-top: 20px;
-    padding: 12px 22px;
-    font-size: 16px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    background: #3797f0;
-    color: white;
-    transition: transform 0.2s ease, background 0.3s ease;
-  }
+.traits p:hover {
+  color: #ff4ecd;
+  transform: scale(1.05);
+}
 
-  button:hover {
-    transform: scale(1.05);
-    background: #4aa3ff;
-  }
+button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: #7a5cff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  .chat-page {
-    display: none;
-    height: 100vh;
-    background: #000;
-    display: flex;
-    flex-direction: column;
-  }
+button:hover {
+  background: #ff4ecd;
+  transform: scale(1.05);
+}
 
-  .chat-header {
-    background: #111;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid #222;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .chat-header img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff4ecd; }
+  to { text-shadow: 0 0 20px #7a5cff; }
+}
 
-  .chat-header span {
-    font-weight: bold;
-  }
+/* CHAT PAGE */
+#chatPage {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  background: #000;
+}
 
-  .chat-box {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #111;
+  border-bottom: 1px solid #333;
+}
 
-  .message-row {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-  }
+.back {
+  font-size: 22px;
+  margin-right: 10px;
+  cursor: pointer;
+}
 
-  .left {
-    justify-content: flex-start;
-  }
+.header img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
-  .right {
-    justify-content: flex-end;
-  }
+.chatBox {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-  .bubble {
-    padding: 10px 14px;
-    border-radius: 18px;
-    max-width: 65%;
-    font-size: 14px;
-  }
+.messageRow {
+  display: flex;
+  align-items: flex-end;
+  margin: 5px 0;
+}
 
-  .sama {
-    background: #262626;
-  }
+.messageRow.sama {
+  justify-content: flex-start;
+}
 
-  .user {
-    background: #3797f0;
-  }
+.messageRow.user {
+  justify-content: flex-end;
+}
 
-  .system {
-    align-self: center;
-    font-size: 12px;
-    color: grey;
-  }
+.bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+}
 
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #222;
-    background: #111;
-  }
+.samaBubble {
+  background: #262626;
+}
 
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-  }
+.userBubble {
+  background: #3797f0;
+}
 
-  .chat-input button {
-    margin-left: 10px;
-    border-radius: 20px;
-  }
+.pfp {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.inputArea {
+  display: flex;
+  padding: 10px;
+  background: #111;
+  border-top: 1px solid #333;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+.sendBtn {
+  margin-left: 10px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: #3797f0;
+}
+
+.systemMsg {
+  text-align: center;
+  color: grey;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
 </style>
 </head>
+
 <body>
 
-<div class="center" id="home">
+<div id="intro">
   <h1>Bro Appreciation Portal</h1>
   <div class="traits">
-      <p>✔ ABSOLUTELY Loyal</p>
-      <p>✔ Dramatic hehehe</p>
-      <p>✔ Emotionally invested :00</p>
-      <p>✔ Top-tier homie</p>
+    <p>✔ ABSOLUTELY Loyal</p>
+    <p>✔ Dramatic hehehe</p>
+    <p>✔ Emotionally invested :00</p>
+    <p>✔ Top-tier homie</p>
   </div>
-  <button onclick="openChat()">dont click</button>
+  <button onclick="openSimulator()">dont click</button>
 </div>
 
-<div class="chat-page" id="chatPage">
-  <div class="chat-header">
-    <img src="file_00000000484c720ba4ca0becfe91d90e" alt="pfp">
-    <span>sama</span>
+<div id="chatPage">
+  <div class="header">
+    <div class="back" onclick="goBack()">←</div>
+    <img src="sama.jpg">
+    <div>sama</div>
   </div>
 
-  <div class="chat-box" id="chatBox"></div>
+  <div class="chatBox" id="chatBox"></div>
 
-  <div class="chat-input">
-    <input type="text" id="userInput" placeholder="Message...">
-    <button onclick="sendMessage()">Send</button>
+  <div class="inputArea">
+    <input id="userInput" placeholder="Message...">
+    <button class="sendBtn" onclick="sendMessage()">Send</button>
   </div>
 </div>
 
 <script>
-  const replies = [
-    "heyyyy how you doinggg",
-    "howww are youuu? whatre u uptoo??",
-    "heyy, just saying, dont overthink anything okayy?",
-    "i appreciate you more than you think.",
-    "weird to say but you matter a lott to me 😭",
-    "you are special to me even if i dont show it okay..",
-    "Okay I gotta go lol bye"
-  ];
+const samaMessages = [
+  "heyyyy how you doinggg",
+  "howww are youuu? whatre u uptoo??",
+  "heyy, just saying, dont overthink anything okayy?",
+  "i appreciate you more than you think.",
+  "weird to say but you matter a lott to me 😭",
+  "you are special to me even if i dont show it okay..",
+  "Okay I gotta go lol bye"
+];
 
-  let replyIndex = 0;
-  let samaGone = false;
-  let postGoneCount = 0;
+let msgIndex = 0;
+let abandonedCount = 0;
+let ended = false;
 
-  function openChat() {
-    document.getElementById('home').style.display = 'none';
-    document.getElementById('chatPage').style.display = 'flex';
-    setTimeout(sendSamaMessage, 500);
+function openSimulator() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("chatPage").style.display = "flex";
+  sendSamaMessage();
+}
+
+function goBack() {
+  location.reload();
+}
+
+function sendSamaMessage() {
+  if (msgIndex >= samaMessages.length) {
+    ended = true;
+    return;
   }
 
-  function sendMessage() {
-    const input = document.getElementById('userInput');
-    const text = input.value.trim();
-    if (!text) return;
+  setTimeout(() => {
+    const chat = document.getElementById("chatBox");
 
-    addUserMessage(text);
-    input.value = '';
+    const row = document.createElement("div");
+    row.className = "messageRow sama";
 
-    if (!samaGone) {
-      setTimeout(sendSamaMessage, 700);
-    } else {
-      postGoneCount++;
-      if (postGoneCount === 3) {
-        const sys = document.createElement('div');
-        sys.className = 'system';
-        sys.innerText = 'im sorry bro';
-        document.getElementById('chatBox').appendChild(sys);
-        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-      }
-    }
-  }
+    const img = document.createElement("img");
+    img.src = "sama.jpg";
+    img.className = "pfp";
 
-  function sendSamaMessage() {
-    if (replyIndex < replies.length) {
-      addSamaMessage(replies[replyIndex]);
-      if (replies[replyIndex] === "Okay I gotta go lol bye") {
-        samaGone = true;
-      }
-      replyIndex++;
-    }
-  }
-
-  function addSamaMessage(text) {
-    const row = document.createElement('div');
-    row.className = 'message-row left';
-
-    const img = document.createElement('img');
-    img.src = 'file_00000000484c720ba4ca0becfe91d90e';
-    img.style.width = '28px';
-    img.style.height = '28px';
-    img.style.borderRadius = '50%';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble sama';
-    bubble.innerText = text;
+    const bubble = document.createElement("div");
+    bubble.className = "bubble samaBubble";
+    bubble.textContent = samaMessages[msgIndex];
 
     row.appendChild(img);
     row.appendChild(bubble);
+    chat.appendChild(row);
 
-    document.getElementById('chatBox').appendChild(row);
-    document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
+    msgIndex++;
+
+    if (msgIndex < samaMessages.length) {
+      sendSamaMessage();
+    } else {
+      ended = true;
+    }
+
+  }, 1200);
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const chat = document.getElementById("chatBox");
+  const row = document.createElement("div");
+  row.className = "messageRow user";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble userBubble";
+  bubble.textContent = text;
+
+  row.appendChild(bubble);
+  chat.appendChild(row);
+  chat.scrollTop = chat.scrollHeight;
+  input.value = "";
+
+  if (ended) {
+    abandonedCount++;
+    if (abandonedCount === 3) {
+      const sys = document.createElement("div");
+      sys.className = "systemMsg";
+      sys.textContent = "im sorry bro";
+      chat.appendChild(sys);
+      chat.scrollTop = chat.scrollHeight;
+    }
   }
+}
 
-  function addUserMessage(text) {
-    const row = document.createElement('div');
-    row.className = 'message-row right';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble user';
-    bubble.innerText = text;
-
-    row.appendChild(bubble);
-
-    document.getElementById('chatBox').appendChild(row);
-    document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+// ENTER KEY SUPPORT (desktop + mobile keyboards)
+document.getElementById("userInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
   }
+});
+
 </script>
 
 </body>
-</
+</html>
